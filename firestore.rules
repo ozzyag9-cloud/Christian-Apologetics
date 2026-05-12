@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUser(data) {
+      return data.uid == request.auth.uid &&
+             data.email is string &&
+             data.tier in ['Injhil', 'Archimedes', 'Zaburum'] &&
+             data.createdAt == request.time &&
+             data.updatedAt == request.time;
+    }
+
+    function isValidUserUpdate(data, existing) {
+      return data.uid == existing.uid &&
+             data.email == existing.email &&
+             data.tier == existing.tier && // Only system can change tier usually, but for now we'll say immutable by user
+             data.createdAt == existing.createdAt &&
+             data.updatedAt == request.time;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUserUpdate(request.resource.data, resource.data);
+
+      match /notes/{itemId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /progress/{itemId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /qa/{qaId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

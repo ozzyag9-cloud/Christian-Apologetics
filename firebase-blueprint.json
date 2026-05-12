@@ -1,0 +1,71 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user account information and subscription tier.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The Firebase Auth UID." },
+        "email": { "type": "string", "format": "email" },
+        "tier": { "type": "string", "enum": ["Injhil", "Archimedes", "Zaburum"], "description": "The user's current subscription level." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "tier", "createdAt", "updatedAt"]
+    },
+    "StudyNote": {
+      "title": "Study Note",
+      "description": "Personal reflections on library items.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "libraryItemId": { "type": "integer" },
+        "content": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "libraryItemId", "content", "updatedAt"]
+    },
+    "UserProgress": {
+      "title": "User Progress",
+      "description": "Tracks which library items the user has studied.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "libraryItemId": { "type": "integer" },
+        "status": { "type": "string", "enum": ["unread", "reading", "studied"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "libraryItemId", "status", "updatedAt"]
+    },
+    "QA": {
+      "title": "Q&A",
+      "description": "User questions and AI answers.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "question", "answer", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile collection."
+    },
+    "/users/{userId}/notes/{libraryItemId}": {
+      "schema": "StudyNote",
+      "description": "User's personal notes for a specific library item."
+    },
+    "/users/{userId}/progress/{libraryItemId}": {
+      "schema": "UserProgress",
+      "description": "User's academic progress on a library item."
+    },
+    "/users/{userId}/qa/{qaId}": {
+      "schema": "QA",
+      "description": "User's Q&A history."
+    }
+  }
+}
