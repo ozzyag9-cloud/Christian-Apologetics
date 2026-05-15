@@ -2,5 +2,5 @@
   "name": "Apologetic Intelligence",
   "description": "An AI-powered Christian academy featuring the Trinity Formula and sacred visual journeys.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
