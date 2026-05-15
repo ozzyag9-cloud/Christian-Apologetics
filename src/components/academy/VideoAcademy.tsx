@@ -8,7 +8,7 @@ const channels = [
     title: 'OpenTheo Masterclass',
     icon: Tv,
     desc: 'Deep theological insights and historical analysis from the OpenTheo archives (Alastair Roberts).',
-    url: 'https://www.youtube.com/embed/videoseries?list=PLpX7pS89pS6YJ7T-_88Xq9pA89_S_m9y', 
+    url: 'https://www.youtube.com/embed/videoseries?list=PL2fSj_l_f_s0_Vf6m_S_m9yA1S6m_N7_S', 
     type: 'scholar'
   },
   {
